@@ -1,0 +1,630 @@
+/* ==========================================================================
+   個人作品集網站 - 主要樣式檔案
+   ========================================================================== */
+
+/* CSS 自訂變數 */
+:root {
+  /* 色彩變數 */
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --info-color: #0dcaf0;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  
+  /* 字體變數 */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-monospace: "Courier New", monospace;
+  --font-size-base: 1rem;
+  --line-height-base: 1.5;
+  
+  /* 間距變數 */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 3rem;
+  
+  /* 圓角變數 */
+  --border-radius-sm: 0.25rem;
+  --border-radius: 0.375rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 1rem;
+  
+  /* 陰影變數 */
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  
+  /* 過渡變數 */
+  --transition-base: all 0.3s ease-in-out;
+  --transition-fast: all 0.15s ease-in-out;
+}
+
+/* ==========================================================================
+   基礎設定
+   ========================================================================== */
+
+/* CSS Reset 增強 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  padding-top: 76px; /* 固定導航列高度補償 */
+}
+
+/* 改善選取文字樣式 */
+::selection {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* ==========================================================================
+   導航列樣式
+   ========================================================================== */
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  transition: var(--transition-base);
+  position: relative;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: var(--primary-color) !important;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: var(--transition-base);
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 80%;
+}
+
+/* ==========================================================================
+   Hero Section 樣式
+   ========================================================================== */
+
+#hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+#hero .container-xxl {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content h1 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.hero-content .btn {
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-lg);
+  transition: var(--transition-base);
+}
+
+.hero-content .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+/* ==========================================================================
+   專案卡片樣式
+   ========================================================================== */
+
+.project-card {
+  transition: var(--transition-base);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  height: 100%;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.project-card .card-body {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--dark-color);
+}
+
+.project-card .card-subtitle {
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.project-type-icon {
+  font-size: 1.1rem;
+}
+
+.project-technologies {
+  margin-bottom: var(--spacing-md);
+}
+
+.project-technologies .badge {
+  margin-right: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.project-actions {
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+}
+
+.project-actions .btn {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  margin-right: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* ==========================================================================
+   搜尋與篩選樣式
+   ========================================================================== */
+
+.search-filter-section {
+  background-color: var(--light-color);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.input-group-text {
+  background-color: white;
+  border-right: none;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* 排序按鈕樣式 */
+.sort-buttons .btn {
+  transition: var(--transition-base);
+}
+
+.sort-buttons .btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.sort-buttons .btn:hover:not(.active) {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   模態對話框樣式
+   ========================================================================== */
+
+.modal-content {
+  border: none;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  background-color: var(--light-color);
+  border-bottom: 1px solid #dee2e6;
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: var(--spacing-xl);
+}
+
+.modal-body h6 {
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 表單樣式增強 */
+.form-label {
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--border-radius);
+  transition: var(--transition-base);
+}
+
+.form-control:focus,
+.form-select:focus {
+  transform: translateY(-1px);
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   技能區樣式
+   ========================================================================== */
+
+#skills .card {
+  border: none;
+  border-radius: var(--border-radius-lg);
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+#skills .card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+#skills .card-body {
+  padding: var(--spacing-xl);
+}
+
+#skills .card-title {
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ==========================================================================
+   聯絡區樣式
+   ========================================================================== */
+
+.contact-item {
+  padding: var(--spacing-xl);
+  transition: var(--transition-base);
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+}
+
+.contact-item h5 {
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+.contact-item a {
+  color: var(--dark-color);
+  transition: var(--transition-base);
+}
+
+.contact-item a:hover {
+  color: var(--primary-color);
+}
+
+/* ==========================================================================
+   Toast 通知樣式
+   ========================================================================== */
+
+.toast {
+  border: none;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.toast-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.toast-error {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.toast-warning {
+  background-color: var(--warning-color);
+  color: var(--dark-color);
+}
+
+.toast-info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+/* ==========================================================================
+   載入動畫樣式
+   ========================================================================== */
+
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25em solid transparent;
+  border-top: 0.25em solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   工具類別
+   ========================================================================== */
+
+/* 文字截斷 */
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 間距工具 */
+.gap-2 {
+  gap: var(--spacing-sm) !important;
+}
+
+.gap-3 {
+  gap: var(--spacing-md) !important;
+}
+
+.gap-4 {
+  gap: var(--spacing-lg) !important;
+}
+
+/* 背景漸層 */
+.bg-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+/* 圓角工具 */
+.rounded-lg {
+  border-radius: var(--border-radius-lg) !important;
+}
+
+.rounded-xl {
+  border-radius: var(--border-radius-xl) !important;
+}
+
+/* ==========================================================================
+   響應式設計
+   ========================================================================== */
+
+/* 小型裝置 (手機) */
+@media (max-width: 575.98px) {
+  body {
+    padding-top: 70px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content .btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .project-card .card-body {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-body {
+    padding: var(--spacing-lg);
+  }
+  
+  #skills .card-body,
+  .contact-item {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* 中型裝置 (平板) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* 大型裝置 (桌面) */
+@media (min-width: 992px) {
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-10px);
+  }
+}
+
+/* ==========================================================================
+   印刷樣式 (可選)
+   ========================================================================== */
+
+@media print {
+  .navbar,
+  .modal,
+  .toast-container,
+  .btn,
+  #addProjectBtn {
+    display: none !important;
+  }
+  
+  body {
+    padding-top: 0;
+  }
+  
+  .project-card {
+    break-inside: avoid;
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+/* ==========================================================================
+   可存取性增強
+   ========================================================================== */
+
+/* 焦點樣式增強 */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* 減少動畫偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 高對比度支援 */
+@media (prefers-contrast: high) {
+  .project-card {
+    border: 2px solid var(--dark-color);
+  }
+  
+  .btn-outline-primary {
+    border-width: 2px;
+  }
+}
+
+/* ==========================================================================
+   無專案時的樣式
+   ========================================================================== */
+
+.no-projects-container {
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+}
+
+.no-projects-container .fa-folder-open {
+  opacity: 0.3;
+  margin-bottom: var(--spacing-lg);
+}
+
+.no-projects-container h3 {
+  color: var(--secondary-color);
+  font-weight: 300;
+}
+
+.no-projects-container p {
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ==========================================================================
+   loading 狀態樣式
+   ========================================================================== */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-text {
+  margin-top: var(--spacing-md);
+  color: var(--secondary-color);
+  font-weight: 500;
+}

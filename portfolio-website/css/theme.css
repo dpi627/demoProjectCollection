@@ -1,0 +1,460 @@
+/* ==========================================================================
+   個人作品集網站 - 主題樣式檔案 (深色/淺色主題切換)
+   ========================================================================== */
+
+/* 淺色主題 (預設) */
+:root {
+  /* 背景色彩 */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  
+  /* 文字色彩 */
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  
+  /* 邊框色彩 */
+  --border-color: #dee2e6;
+  --border-color-light: #f1f3f4;
+  
+  /* 卡片背景 */
+  --card-bg: #ffffff;
+  --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --card-shadow-hover: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  
+  /* 導航列 */
+  --navbar-bg: rgba(248, 249, 250, 0.95);
+  --navbar-border: rgba(0, 0, 0, 0.1);
+  
+  /* 表單元素 */
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --input-focus-bg: #ffffff;
+  --input-focus-border: #86b7fe;
+  
+  /* 模態對話框 */
+  --modal-bg: #ffffff;
+  --modal-header-bg: #f8f9fa;
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+}
+
+/* 深色主題 */
+[data-theme="dark"] {
+  /* 背景色彩 */
+  --bg-primary: #212529;
+  --bg-secondary: #343a40;
+  --bg-tertiary: #495057;
+  
+  /* 文字色彩 */
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --text-muted: #6c757d;
+  
+  /* 邊框色彩 */
+  --border-color: #495057;
+  --border-color-light: #343a40;
+  
+  /* 卡片背景 */
+  --card-bg: #2d3436;
+  --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  
+  /* 導航列 */
+  --navbar-bg: rgba(33, 37, 41, 0.95);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  
+  /* 表單元素 */
+  --input-bg: #495057;
+  --input-border: #6c757d;
+  --input-focus-bg: #495057;
+  --input-focus-border: #86b7fe;
+  
+  /* 模態對話框 */
+  --modal-bg: #2d3436;
+  --modal-header-bg: #343a40;
+  --modal-backdrop: rgba(0, 0, 0, 0.7);
+}
+
+/* ==========================================================================
+   基礎主題樣式應用
+   ========================================================================== */
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+   導航列主題
+   ========================================================================== */
+
+.navbar {
+  background-color: var(--navbar-bg) !important;
+  border-bottom: 1px solid var(--navbar-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+  color: var(--text-primary) !important;
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-secondary) !important;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: var(--primary-color) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28248, 249, 250, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* ==========================================================================
+   主題切換按鈕
+   ========================================================================== */
+
+#themeToggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#themeToggle:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transform: rotate(360deg);
+}
+
+#themeToggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* 主題切換圖示動畫 */
+#themeIcon {
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] #themeIcon::before {
+  content: "\f185"; /* fa-sun */
+}
+
+/* ==========================================================================
+   區塊背景主題
+   ========================================================================== */
+
+#skills {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Hero Section 在深色主題下的調整 */
+[data-theme="dark"] #hero {
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+/* ==========================================================================
+   卡片主題
+   ========================================================================== */
+
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-title {
+  color: var(--text-primary);
+}
+
+.card-text,
+.card-subtitle {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   表單元素主題
+   ========================================================================== */
+
+.form-control,
+.form-select {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--input-focus-bg);
+  border-color: var(--input-focus-border);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-label {
+  color: var(--text-primary);
+}
+
+.input-group-text {
+  background-color: var(--bg-secondary);
+  border-color: var(--input-border);
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   模態對話框主題
+   ========================================================================== */
+
+.modal-content {
+  background-color: var(--modal-bg);
+  border-color: var(--border-color);
+}
+
+.modal-header {
+  background-color: var(--modal-header-bg);
+  border-bottom-color: var(--border-color);
+}
+
+.modal-title {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  color: var(--text-primary);
+}
+
+.modal-body h6 {
+  color: var(--text-primary);
+  border-bottom-color: var(--primary-color);
+}
+
+.modal-backdrop {
+  background-color: var(--modal-backdrop);
+}
+
+.btn-close {
+  filter: var(--bs-btn-close-white-filter, none);
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* ==========================================================================
+   Toast 通知主題
+   ========================================================================== */
+
+.toast {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.toast-body {
+  color: inherit;
+}
+
+/* ==========================================================================
+   按鈕主題增強
+   ========================================================================== */
+
+.btn-outline-secondary {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--text-secondary);
+  border-color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   邊框與分隔線主題
+   ========================================================================== */
+
+.border,
+.border-top,
+.border-bottom,
+.border-start,
+.border-end {
+  border-color: var(--border-color) !important;
+}
+
+hr {
+  border-color: var(--border-color);
+  opacity: 0.25;
+}
+
+/* ==========================================================================
+   文字色彩主題
+   ========================================================================== */
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* ==========================================================================
+   Badge 主題
+   ========================================================================== */
+
+.badge.bg-secondary {
+  background-color: var(--text-muted) !important;
+}
+
+.badge.bg-light {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ==========================================================================
+   頁尾主題
+   ========================================================================== */
+
+footer {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-top: 1px solid var(--border-color);
+}
+
+footer .text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* ==========================================================================
+   主題切換動畫
+   ========================================================================== */
+
+/* 主題切換時的平滑過渡 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 保持原有的動畫效果不被覆蓋 */
+.btn,
+.card,
+.nav-link,
+.project-card {
+  transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   深色主題下的特殊調整
+   ========================================================================== */
+
+/* 深色主題下的陰影調整 */
+[data-theme="dark"] .shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 深色主題下的邊框調整 */
+[data-theme="dark"] .border {
+  border-color: var(--border-color) !important;
+}
+
+/* 深色主題下的文字選取 */
+[data-theme="dark"] ::selection {
+  background-color: #4f46e5;
+  color: white;
+}
+
+/* ==========================================================================
+   響應式主題調整
+   ========================================================================== */
+
+/* 小型裝置的主題優化 */
+@media (max-width: 575.98px) {
+  #themeToggle {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ==========================================================================
+   無障礙性主題支援
+   ========================================================================== */
+
+/* 高對比度模式下的調整 */
+@media (prefers-contrast: high) {
+  [data-theme="dark"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --border-color: #666666;
+  }
+  
+  .btn-primary {
+    border-width: 2px;
+  }
+  
+  .card {
+    border-width: 2px;
+  }
+}
+
+/* 減少動畫的使用者偏好 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+  
+  #themeToggle:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   主題切換載入狀態
+   ========================================================================== */
+
+.theme-transition {
+  transition: all 0.3s ease !important;
+}
+
+.theme-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.theme-loading * {
+  transition: none !important;
+}

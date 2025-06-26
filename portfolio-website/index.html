@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="個人作品集網站，展示 C# 開發專案與技能">
+    <meta name="keywords" content="C#, .NET, 作品集, 程式開發, 軟體開發">
+    <meta name="author" content="Your Name">
+    
+    <title>個人作品集 | C# 開發者</title>
+    
+    <!-- Bootstrap 5.3.x CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome 6.x Free CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- 自訂樣式檔案 -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <!-- 導航列 -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+            <div class="container-xxl">
+                <!-- 品牌標誌 -->
+                <a class="navbar-brand fw-bold" href="#">
+                    <i class="fas fa-code me-2"></i>
+                    作品集
+                </a>
+                
+                <!-- 漢堡選單按鈕 -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="切換導航">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- 導航選單 -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#hero">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#projects">專案</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#skills">技能</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">聯絡</a>
+                        </li>
+                    </ul>
+                    
+                    <!-- 主題切換按鈕 -->
+                    <div class="d-flex">
+                        <button class="btn btn-outline-secondary btn-sm me-2" id="themeToggle" title="切換主題">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主要內容 -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-vh-100 d-flex align-items-center bg-gradient">
+            <div class="container-xxl">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="hero-content">
+                            <h1 class="display-4 fw-bold mb-3 animate-fade-in">
+                                您好，我是 <span class="text-primary">C# 開發者</span>
+                            </h1>
+                            <p class="lead mb-4 animate-fade-in-delay">
+                                專精於 .NET 開發，致力於創建高品質的軟體解決方案。
+                                擁有豐富的桌面應用程式、網頁應用程式和控制台應用程式開發經驗。
+                            </p>
+                            <div class="d-flex flex-wrap gap-3 animate-fade-in-delay-2">
+                                <a href="#projects" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-rocket me-2"></i>查看專案
+                                </a>
+                                <a href="#contact" class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-envelope me-2"></i>聯絡我
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <div class="hero-image animate-float">
+                            <img src="assets/images/hero-image.svg" alt="開發者插圖" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 專案展示區 -->
+        <section id="projects" class="py-5">
+            <div class="container-xxl">
+                <!-- 標題區 -->
+                <div class="row mb-5">
+                    <div class="col-12 text-center">
+                        <h2 class="display-5 fw-bold mb-3">我的專案</h2>
+                        <p class="lead text-muted">精選的 C# 開發專案，展示我的技術能力與創意</p>
+                    </div>
+                </div>
+                
+                <!-- 搜尋與篩選區 -->
+                <div class="row mb-4">
+                    <div class="col-lg-6 mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="searchInput" 
+                                   placeholder="搜尋專案名稱或技術...">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <select class="form-select" id="filterType">
+                            <option value="">所有類型</option>
+                            <option value="WEB">網頁應用程式</option>
+                            <option value="DESKTOP">桌面應用程式</option>
+                            <option value="CONSOLE">控制台應用程式</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <select class="form-select" id="filterFramework">
+                            <option value="">所有框架</option>
+                            <option value=".NET Core">.NET Core</option>
+                            <option value=".NET Framework">.NET Framework</option>
+                            <option value="WPF">WPF</option>
+                            <option value="WinForms">WinForms</option>
+                            <option value="ASP.NET Core">ASP.NET Core</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 操作按鈕區 -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button class="btn btn-primary" id="addProjectBtn">
+                                    <i class="fas fa-plus me-2"></i>新增專案
+                                </button>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="sortDate">
+                                        <i class="fas fa-calendar me-1"></i>日期
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="sortName">
+                                        <i class="fas fa-sort-alpha-up me-1"></i>名稱
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="sortType">
+                                        <i class="fas fa-tags me-1"></i>類型
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 專案卡片區 -->
+                <div class="row g-4" id="projectsContainer">
+                    <!-- 專案卡片將透過 JavaScript 動態生成 -->
+                </div>
+                
+                <!-- 無專案時的顯示 -->
+                <div class="row" id="noProjectsMessage" style="display: none;">
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-folder-open fa-5x text-muted mb-3"></i>
+                        <h3 class="text-muted">尚無專案資料</h3>
+                        <p class="text-muted">點擊上方「新增專案」按鈕開始建立您的第一個專案</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能區 -->
+        <section id="skills" class="py-5 bg-light">
+            <div class="container-xxl">
+                <div class="row mb-5">
+                    <div class="col-12 text-center">
+                        <h2 class="display-5 fw-bold mb-3">技能與專長</h2>
+                        <p class="lead text-muted">我熟練運用以下技術進行開發</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">程式語言</h5>
+                                <p class="card-text">C#, JavaScript, SQL, HTML, CSS</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">框架與工具</h5>
+                                <p class="card-text">.NET Core, ASP.NET Core, WPF, WinForms, Entity Framework</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-database fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">資料庫</h5>
+                                <p class="card-text">SQL Server, MySQL, SQLite, Redis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 聯絡區 -->
+        <section id="contact" class="py-5">
+            <div class="container-xxl">
+                <div class="row mb-5">
+                    <div class="col-12 text-center">
+                        <h2 class="display-5 fw-bold mb-3">聯絡我</h2>
+                        <p class="lead text-muted">有專案合作需求或技術交流，歡迎與我聯絡</p>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="row g-4">
+                            <div class="col-md-6 text-center">
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                                    <h5>電子郵件</h5>
+                                    <a href="mailto:your.email@example.com" class="text-decoration-none">
+                                        your.email@example.com
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="contact-item">
+                                    <i class="fab fa-github fa-3x text-primary mb-3"></i>
+                                    <h5>GitHub</h5>
+                                    <a href="https://github.com/yourusername" target="_blank" class="text-decoration-none">
+                                        github.com/yourusername
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container-xxl">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2024 個人作品集. 版權所有.</p>
+                    <p class="mb-0 text-muted small">使用 Bootstrap 5 與 Font Awesome 建立</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 新增/編輯專案模態對話框 -->
+    <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModalLabel">新增專案</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="projectForm">
+                        <!-- 基本資訊群組 -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i>基本資訊
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="projectName" class="form-label">專案名稱 *</label>
+                                    <input type="text" class="form-control" id="projectName" required>
+                                    <div class="invalid-feedback">請輸入專案名稱</div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="projectDescription" class="form-label">專案描述</label>
+                                    <textarea class="form-control" id="projectDescription" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectType" class="form-label">專案類型 *</label>
+                                    <select class="form-select" id="projectType" required>
+                                        <option value="">請選擇類型</option>
+                                        <option value="WEB">網頁應用程式</option>
+                                        <option value="DESKTOP">桌面應用程式</option>
+                                        <option value="CONSOLE">控制台應用程式</option>
+                                    </select>
+                                    <div class="invalid-feedback">請選擇專案類型</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectStatus" class="form-label">專案狀態</label>
+                                    <select class="form-select" id="projectStatus">
+                                        <option value="開發中">開發中</option>
+                                        <option value="已完成">已完成</option>
+                                        <option value="維護中">維護中</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 技術資訊群組 -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-cogs me-2"></i>技術資訊
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="projectFramework" class="form-label">開發框架</label>
+                                    <select class="form-select" id="projectFramework">
+                                        <option value="">請選擇框架</option>
+                                        <option value=".NET Core">.NET Core</option>
+                                        <option value=".NET Framework">.NET Framework</option>
+                                        <option value="WPF">WPF</option>
+                                        <option value="WinForms">WinForms</option>
+                                        <option value="ASP.NET Core">ASP.NET Core</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectTechnologies" class="form-label">技術標籤</label>
+                                    <input type="text" class="form-control" id="projectTechnologies" 
+                                           placeholder="例如: C#, SQL Server, Entity Framework (以逗號分隔)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 連結資訊群組 -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-link me-2"></i>連結資訊
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="projectRepositoryUrl" class="form-label">Repository URL</label>
+                                    <input type="url" class="form-control" id="projectRepositoryUrl" 
+                                           placeholder="https://github.com/username/project">
+                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectWebsiteUrl" class="form-label">網站 URL</label>
+                                    <input type="url" class="form-control" id="projectWebsiteUrl" 
+                                           placeholder="https://example.com">
+                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectDownloadUrl" class="form-label">下載 URL</label>
+                                    <input type="url" class="form-control" id="projectDownloadUrl" 
+                                           placeholder="https://example.com/download">
+                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 媒體資訊群組 -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-images me-2"></i>媒體資訊
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="projectScreenshots" class="form-label">專案截圖 URL</label>
+                                    <input type="url" class="form-control" id="projectScreenshots" 
+                                           placeholder="圖片 URL (可在專案完成後添加)">
+                                    <small class="form-text text-muted">
+                                        目前僅支援單張圖片，請提供圖片的完整 URL
+                                    </small>
+                                </div>
+                                <div class="col-12">
+                                    <label for="projectDevelopmentLog" class="form-label">開發紀錄</label>
+                                    <textarea class="form-control" id="projectDevelopmentLog" rows="3" 
+                                              placeholder="記錄開發過程中的重要事項、遇到的挑戰或解決方案..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 時間資訊群組 -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-calendar me-2"></i>時間資訊
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="projectStartDate" class="form-label">開始日期</label>
+                                    <input type="date" class="form-control" id="projectStartDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectEndDate" class="form-label">結束日期</label>
+                                    <input type="date" class="form-control" id="projectEndDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 隱藏欄位 -->
+                        <input type="hidden" id="projectId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveProjectBtn">儲存專案</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 專案詳細檢視模態對話框 -->
+    <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectDetailModalLabel">專案詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body" id="projectDetailContent">
+                    <!-- 專案詳細內容將透過 JavaScript 動態生成 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 通知容器 -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toastNotification" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastBody">
+                    <!-- 通知內容 -->
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="關閉"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+            crossorigin="anonymous"></script>
+    
+    <!-- 自訂 JavaScript 檔案 -->
+    <script src="js/utils.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

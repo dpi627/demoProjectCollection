@@ -1,0 +1,661 @@
+/* ==========================================================================
+   個人作品集網站 - 動畫效果檔案
+   ========================================================================== */
+
+/* ==========================================================================
+   基礎動畫定義
+   ========================================================================== */
+
+/* 淡入動畫 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 縮放動畫 */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* 旋轉動畫 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* 浮動動畫 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 彈跳動畫 */
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* 搖擺動畫 */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/* 閃爍動畫 */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Hero Section 動畫
+   ========================================================================== */
+
+.animate-fade-in {
+  animation: fadeInUp 1s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Hero 圖片動畫 */
+.hero-image {
+  animation: fadeInRight 1.2s ease-out 0.5s both;
+}
+
+.hero-image img {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   專案卡片動畫
+   ========================================================================== */
+
+.project-card {
+  animation: fadeInUp 0.6s ease-out both;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+}
+
+.project-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+.project-card .card-img-top {
+  transition: all 0.4s ease;
+}
+
+/* 卡片進場動畫延遲 */
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+.project-card:nth-child(6) { animation-delay: 0.6s; }
+.project-card:nth-child(7) { animation-delay: 0.7s; }
+.project-card:nth-child(8) { animation-delay: 0.8s; }
+.project-card:nth-child(9) { animation-delay: 0.9s; }
+
+/* 新增卡片動畫 */
+.project-card-new {
+  animation: scaleIn 0.5s ease-out;
+}
+
+/* 刪除卡片動畫 */
+.project-card-removing {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* ==========================================================================
+   按鈕動畫
+   ========================================================================== */
+
+.btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* 按鈕漣漪效果 */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* 主要按鈕特殊效果 */
+.btn-primary {
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  border: none;
+  position: relative;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::after {
+  left: 100%;
+}
+
+/* ==========================================================================
+   導航列動畫
+   ========================================================================== */
+
+.navbar {
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar-nav .nav-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::before {
+  width: 80%;
+}
+
+/* ==========================================================================
+   模態對話框動畫
+   ========================================================================== */
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: scale(0.8) translateY(-50px);
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+/* 模態內容進場動畫 */
+.modal-body > * {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.modal-body > *:nth-child(1) { animation-delay: 0.1s; }
+.modal-body > *:nth-child(2) { animation-delay: 0.15s; }
+.modal-body > *:nth-child(3) { animation-delay: 0.2s; }
+.modal-body > *:nth-child(4) { animation-delay: 0.25s; }
+
+/* ==========================================================================
+   表單動畫
+   ========================================================================== */
+
+.form-control,
+.form-select {
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+}
+
+/* 表單標籤動畫 */
+.form-label {
+  transition: all 0.3s ease;
+}
+
+.form-control:focus + .form-label,
+.form-select:focus + .form-label {
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* 表單驗證動畫 */
+.was-validated .form-control:invalid {
+  animation: shake 0.5s ease-in-out;
+}
+
+.was-validated .form-control:valid {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* ==========================================================================
+   載入動畫
+   ========================================================================== */
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: blink 1s infinite;
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 骨架屏動畫 */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
+   Toast 通知動畫
+   ========================================================================== */
+
+.toast {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.toast.hide {
+  animation: slideOutRight 0.4s ease-in;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   滾動觸發動畫
+   ========================================================================== */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.animate-on-scroll.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 技能卡片滾動動畫 */
+#skills .card {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+#skills .card:nth-child(1) { animation-delay: 0.1s; }
+#skills .card:nth-child(2) { animation-delay: 0.2s; }
+#skills .card:nth-child(3) { animation-delay: 0.3s; }
+
+/* 聯絡區動畫 */
+.contact-item {
+  animation: fadeInUp 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.contact-item:nth-child(1) { animation-delay: 0.1s; }
+.contact-item:nth-child(2) { animation-delay: 0.2s; }
+
+.contact-item:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* ==========================================================================
+   主題切換動畫
+   ========================================================================== */
+
+#themeToggle {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#themeToggle:hover {
+  transform: rotate(360deg) scale(1.1);
+}
+
+#themeIcon {
+  transition: all 0.3s ease;
+}
+
+/* 主題切換時的頁面過渡 */
+.theme-transition {
+  transition: all 0.3s ease !important;
+}
+
+/* ==========================================================================
+   響應式動畫調整
+   ========================================================================== */
+
+/* 小型裝置動畫優化 */
+@media (max-width: 575.98px) {
+  .project-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+  
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  
+  .hero-image {
+    animation: fadeIn 1s ease-out 0.3s both;
+  }
+  
+  .animate-fade-in,
+  .animate-fade-in-delay,
+  .animate-fade-in-delay-2 {
+    animation-duration: 0.8s;
+  }
+}
+
+/* 平板裝置動畫優化 */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .project-card:hover {
+    transform: translateY(-6px) scale(1.015);
+  }
+}
+
+/* ==========================================================================
+   可存取性動畫設定
+   ========================================================================== */
+
+/* 減少動畫的使用者偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .hero-image img,
+  .animate-float {
+    animation: none;
+  }
+  
+  .project-card:hover {
+    transform: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+  
+  #themeToggle:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   效能優化
+   ========================================================================== */
+
+/* GPU 加速 */
+.project-card,
+.btn,
+.hero-image,
+.navbar {
+  will-change: transform;
+}
+
+/* 動畫完成後移除 will-change */
+.animation-complete {
+  will-change: auto;
+}
+
+/* ==========================================================================
+   特殊效果動畫
+   ========================================================================== */
+
+/* 文字打字機效果 */
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid orange;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: orange; }
+}
+
+/* 粒子效果容器 */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: particleFloat 6s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px);
+    opacity: 0;
+  }
+}

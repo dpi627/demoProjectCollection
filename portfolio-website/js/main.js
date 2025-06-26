@@ -1,5 +1,8 @@
 /* ==========================================================================
-   個人作品集網站 - 主要邏輯檔案
+   個人            // 搜尋功能
+            searchInput: Utils.DOM.getElement('#searchInput'),
+            clearSearch: Utils.DOM.getElement('#clearSearch'),
+            filterType: Utils.DOM.getElement('#filterType'),網站 - 主要邏輯檔案
    ========================================================================== */
 
 /**
@@ -168,6 +171,14 @@ class PortfolioApp {
             );
         }
         
+        // 清除搜尋
+        if (this.elements.clearSearch) {
+            this.elements.clearSearch.addEventListener('click', () => {
+                this.elements.searchInput.value = '';
+                this.handleSearch();
+            });
+        }
+        
         // 篩選功能
         if (this.elements.filterType) {
             this.elements.filterType.addEventListener('change', () => this.handleFilter());
@@ -215,9 +226,24 @@ class PortfolioApp {
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
                     Utils.Animation.scrollTo(href);
+                    
+                    // 更新活動連結
+                    this.updateActiveNavLink(href);
+                    
+                    // 在行動裝置上關閉導航選單
+                    const navbarCollapse = Utils.DOM.getElement('.navbar-collapse');
+                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                        const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                        bsCollapse.hide();
+                    }
                 }
             });
         });
+        
+        // 滾動時更新活動連結
+        window.addEventListener('scroll', Utils.throttle(() => {
+            this.updateActiveNavLinkOnScroll();
+        }, 100));
         
         // 鍵盤快捷鍵
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
@@ -385,57 +411,97 @@ class PortfolioApp {
         const moreCount = project.technologies.length > 3 ? 
             `<span class="badge bg-secondary">+${project.technologies.length - 3}</span>` : '';
         
+        // 計算專案時長
+        const duration = this.calculateProjectDuration(project.startDate, project.endDate);
+        
         col.innerHTML = `
             <div class="card project-card h-100 shadow-sm">
+                <div class="card-header-custom">
+                    <span class="badge ${Utils.Project.getStatusBadgeClass(project.status)} position-absolute top-0 end-0 m-2">
+                        ${project.status}
+                    </span>
+                </div>
                 <img src="${image}" class="card-img-top" alt="${project.name}" 
                      onerror="this.src='${Utils.Project.getDefaultImage(project.projectType)}'">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${project.name}</h5>
-                    <p class="card-subtitle text-muted mb-2">
-                        <i class="${Utils.Project.getTypeIcon(project.projectType)} project-type-icon me-1"></i>
+                    <div class="d-flex align-items-start justify-content-between mb-2">
+                        <h5 class="card-title mb-0">${project.name}</h5>
+                        <i class="${Utils.Project.getTypeIcon(project.projectType)} project-type-icon text-primary ms-2"></i>
+                    </div>
+                    <p class="card-subtitle text-muted mb-2 small">
+                        <i class="fas fa-tools me-1"></i>
                         ${project.framework || project.projectType}
-                        <span class="badge ${Utils.Project.getStatusBadgeClass(project.status)} ms-2">
-                            ${project.status}
-                        </span>
+                        ${duration ? `<span class="text-muted ms-2">• ${duration}</span>` : ''}
                     </p>
-                    <p class="card-text text-truncate-2 flex-grow-1">
+                    <p class="card-text text-truncate-2 flex-grow-1 mb-3">
                         ${project.description || '暫無描述'}
                     </p>
                     <div class="project-technologies mb-3">
                         ${technologies}
                         ${moreCount}
                     </div>
+                    <div class="project-stats mb-3">
+                        <div class="row text-center small text-muted">
+                            ${project.startDate ? `
+                                <div class="col-6">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    ${Utils.Format.date(project.startDate, 'YYYY/MM')}
+                                </div>
+                            ` : ''}
+                            <div class="col-${project.startDate ? '6' : '12'}">
+                                <i class="fas fa-tags me-1"></i>
+                                ${project.technologies.length} 項技術
+                            </div>
+                        </div>
+                    </div>
                     <div class="project-actions mt-auto">
-                        <div class="btn-group w-100" role="group">
-                            <button type="button" class="btn btn-outline-primary btn-sm" 
+                        <div class="d-grid gap-2 mb-2">
+                            <button type="button" class="btn btn-primary btn-sm" 
                                     onclick="portfolioApp.showProjectDetail('${project.id}')" 
                                     title="檢視詳情">
-                                <i class="fas fa-eye me-1"></i>檢視
+                                <i class="fas fa-eye me-1"></i>檢視詳情
                             </button>
+                        </div>
+                        <div class="row g-1">
                             ${project.repositoryUrl ? 
-                                `<a href="${project.repositoryUrl}" target="_blank" 
-                                    class="btn btn-outline-secondary btn-sm" title="查看程式碼">
-                                    <i class="fab fa-github me-1"></i>程式碼
-                                </a>` : ''
+                                `<div class="col-4">
+                                    <a href="${project.repositoryUrl}" target="_blank" 
+                                       class="btn btn-outline-secondary btn-sm w-100" title="查看程式碼">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>` : '<div class="col-4"></div>'
                             }
                             ${project.websiteUrl ? 
-                                `<a href="${project.websiteUrl}" target="_blank" 
-                                    class="btn btn-outline-success btn-sm" title="查看網站">
-                                    <i class="fas fa-external-link-alt me-1"></i>網站
-                                </a>` : ''
+                                `<div class="col-4">
+                                    <a href="${project.websiteUrl}" target="_blank" 
+                                       class="btn btn-outline-success btn-sm w-100" title="查看網站">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>` : '<div class="col-4"></div>'
                             }
-                        </div>
-                        <div class="btn-group w-100 mt-2" role="group">
-                            <button type="button" class="btn btn-outline-warning btn-sm" 
-                                    onclick="portfolioApp.showEditProjectModal('${project.id}')" 
-                                    title="編輯專案">
-                                <i class="fas fa-edit me-1"></i>編輯
-                            </button>
-                            <button type="button" class="btn btn-outline-danger btn-sm" 
-                                    onclick="portfolioApp.confirmDeleteProject('${project.id}')" 
-                                    title="刪除專案">
-                                <i class="fas fa-trash me-1"></i>刪除
-                            </button>
+                            <div class="col-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-warning btn-sm dropdown-toggle w-100" 
+                                            type="button" data-bs-toggle="dropdown" title="更多操作">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="#" 
+                                               onclick="portfolioApp.showEditProjectModal('${project.id}')">
+                                                <i class="fas fa-edit me-2"></i>編輯
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#" 
+                                               onclick="portfolioApp.confirmDeleteProject('${project.id}')">
+                                                <i class="fas fa-trash me-2"></i>刪除
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -443,6 +509,31 @@ class PortfolioApp {
         `;
         
         return col;
+    }
+    
+    /**
+     * 計算專案時長
+     * @param {string} startDate - 開始日期
+     * @param {string} endDate - 結束日期
+     * @returns {string} 時長描述
+     */
+    calculateProjectDuration(startDate, endDate) {
+        if (!startDate) return '';
+        
+        const start = new Date(startDate);
+        const end = endDate ? new Date(endDate) : new Date();
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffMonths = Math.floor(diffDays / 30);
+        
+        if (diffMonths >= 1) {
+            return `${diffMonths} 個月`;
+        } else if (diffDays >= 7) {
+            const weeks = Math.floor(diffDays / 7);
+            return `${weeks} 週`;
+        } else {
+            return `${diffDays} 天`;
+        }
     }
     
     /**
@@ -775,6 +866,43 @@ class PortfolioApp {
         animatedElements.forEach(element => {
             observer.observe(element);
         });
+    }
+    
+    /**
+     * 更新活動導航連結
+     * @param {string} targetId - 目標區塊 ID
+     */
+    updateActiveNavLink(targetId) {
+        this.elements.navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === targetId) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    /**
+     * 根據滾動位置更新活動導航連結
+     */
+    updateActiveNavLinkOnScroll() {
+        const sections = ['#hero', '#projects', '#skills', '#contact'];
+        let currentSection = '';
+        
+        for (let section of sections) {
+            const element = Utils.DOM.getElement(section);
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                // 考慮導航列高度
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section;
+                    break;
+                }
+            }
+        }
+        
+        if (currentSection) {
+            this.updateActiveNavLink(currentSection);
+        }
     }
     
     /**

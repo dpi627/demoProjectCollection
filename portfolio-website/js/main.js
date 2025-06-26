@@ -1,4 +1,8 @@
-/* ==========================================================================
+/* ============================        // 模態對話框
+        this.projectModal = null;
+        this.projectDetailModal = null;
+        this.imageLightboxModal = null;
+        this.lightboxCarousel = null;===========================================
    個人            // 搜尋功能
             searchInput: Utils.DOM.getElement('#searchInput'),
             clearSearch: Utils.DOM.getElement('#clearSearch'),
@@ -127,6 +131,9 @@ class PortfolioApp {
             projectDetailModal: Utils.DOM.getElement('#projectDetailModal'),
             projectModalLabel: Utils.DOM.getElement('#projectModalLabel'),
             projectDetailContent: Utils.DOM.getElement('#projectDetailContent'),
+            imageLightboxModal: Utils.DOM.getElement('#imageLightboxModal'),
+            lightboxCarouselInner: Utils.DOM.getElement('#lightboxCarouselInner'),
+            lightboxIndicators: Utils.DOM.getElement('#lightboxIndicators'),
             
             // Toast
             toastNotification: Utils.DOM.getElement('#toastNotification'),
@@ -150,6 +157,11 @@ class PortfolioApp {
         
         if (this.elements.projectDetailModal) {
             this.projectDetailModal = new bootstrap.Modal(this.elements.projectDetailModal);
+        }
+        
+        if (this.elements.imageLightboxModal) {
+            this.imageLightboxModal = new bootstrap.Modal(this.elements.imageLightboxModal);
+            this.lightboxCarousel = new bootstrap.Carousel(Utils.DOM.getElement('#lightboxCarousel'));
         }
         
         // 初始化 Toast
@@ -272,11 +284,23 @@ class PortfolioApp {
         
         // ESC: 關閉模態對話框
         if (e.key === 'Escape') {
-            if (this.projectModal && this.elements.projectModal.classList.contains('show')) {
+            if (this.imageLightboxModal && this.elements.imageLightboxModal.classList.contains('show')) {
+                this.imageLightboxModal.hide();
+            } else if (this.projectDetailModal && this.elements.projectDetailModal.classList.contains('show')) {
+                this.projectDetailModal.hide();
+            } else if (this.projectModal && this.elements.projectModal.classList.contains('show')) {
                 this.projectModal.hide();
             }
-            if (this.projectDetailModal && this.elements.projectDetailModal.classList.contains('show')) {
-                this.projectDetailModal.hide();
+        }
+        
+        // 圖片燈箱導航 (當燈箱開啟時)
+        if (this.imageLightboxModal && this.elements.imageLightboxModal.classList.contains('show')) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                this.lightboxCarousel?.prev();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                this.lightboxCarousel?.next();
             }
         }
     }
@@ -780,8 +804,27 @@ class PortfolioApp {
         this.elements.projectDetailContent.innerHTML = `
             <div class="row">
                 <div class="col-md-6 mb-4">
-                    <img src="${image}" class="img-fluid rounded shadow" alt="${project.name}"
+                    <img src="${image}" class="img-fluid rounded shadow project-detail-image" 
+                         alt="${project.name}"
+                         style="cursor: pointer;"
+                         onclick="portfolioApp.showImageLightbox(['${image}'], 0, '${project.name}')"
                          onerror="this.src='${Utils.Project.getDefaultImage(project.projectType)}'">
+                    ${project.screenshots && project.screenshots.length > 1 ? `
+                        <div class="mt-3">
+                            <h6 class="fw-bold mb-2">更多截圖</h6>
+                            <div class="row g-2">
+                                ${project.screenshots.slice(1).map((screenshot, index) => `
+                                    <div class="col-4">
+                                        <img src="${screenshot}" 
+                                             class="img-fluid rounded thumbnail-image"
+                                             style="cursor: pointer; height: 80px; object-fit: cover;"
+                                             onclick="portfolioApp.showImageLightbox(${JSON.stringify(project.screenshots)}, ${index + 1}, '${project.name}')"
+                                             onerror="this.src='${Utils.Project.getDefaultImage(project.projectType)}'">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="col-md-6 mb-4">
                     <h3>${project.name}</h3>
@@ -823,6 +866,64 @@ class PortfolioApp {
                 </div>
             ` : ''}
         `;
+    }
+    
+    /**
+     * 顯示圖片燈箱
+     * @param {Array} images - 圖片陣列
+     * @param {number} startIndex - 起始索引
+     * @param {string} title - 標題
+     */
+    showImageLightbox(images, startIndex = 0, title = '') {
+        if (!images || images.length === 0) return;
+        
+        // 更新標題
+        if (this.elements.imageLightboxModal) {
+            const modalTitle = this.elements.imageLightboxModal.querySelector('.modal-title');
+            if (modalTitle) {
+                modalTitle.textContent = title || '圖片檢視';
+            }
+        }
+        
+        // 生成輪播項目
+        const carouselItems = images.map((image, index) => `
+            <div class="carousel-item ${index === startIndex ? 'active' : ''} d-flex align-items-center justify-content-center">
+                <img src="${image}" 
+                     class="d-block" 
+                     style="max-width: 90%; max-height: 90vh; object-fit: contain;"
+                     alt="圖片 ${index + 1}">
+            </div>
+        `).join('');
+        
+        // 生成指示器
+        const indicators = images.map((_, index) => `
+            <button type="button" 
+                    data-bs-target="#lightboxCarousel" 
+                    data-bs-slide-to="${index}" 
+                    ${index === startIndex ? 'class="active" aria-current="true"' : ''}
+                    aria-label="圖片 ${index + 1}"></button>
+        `).join('');
+        
+        // 更新內容
+        if (this.elements.lightboxCarouselInner) {
+            this.elements.lightboxCarouselInner.innerHTML = carouselItems;
+        }
+        
+        if (this.elements.lightboxIndicators) {
+            this.elements.lightboxIndicators.innerHTML = indicators;
+        }
+        
+        // 顯示燈箱
+        if (this.imageLightboxModal) {
+            this.imageLightboxModal.show();
+            
+            // 確保輪播到正確的圖片
+            setTimeout(() => {
+                if (this.lightboxCarousel && startIndex > 0) {
+                    this.lightboxCarousel.to(startIndex);
+                }
+            }, 150);
+        }
     }
     
     /**

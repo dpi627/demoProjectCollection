@@ -466,6 +466,36 @@
         </div>
     </div>
 
+    <!-- 圖片燈箱模態對話框 -->
+    <div class="modal fade" id="imageLightboxModal" tabindex="-1" aria-labelledby="imageLightboxModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="imageLightboxModalLabel">圖片檢視</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-center p-0">
+                    <div id="lightboxCarousel" class="carousel slide w-100 h-100" data-bs-ride="false">
+                        <div class="carousel-inner h-100" id="lightboxCarouselInner">
+                            <!-- 圖片將動態載入 -->
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">上一張</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">下一張</span>
+                        </button>
+                        <div class="carousel-indicators" id="lightboxIndicators">
+                            <!-- 指示器將動態載入 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast 通知容器 -->
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="toastNotification" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">

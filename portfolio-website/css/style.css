@@ -696,3 +696,71 @@ body {
   color: var(--secondary-color);
   font-weight: 500;
 }
+
+/* ==========================================================================
+   圖片燈箱樣式
+   ========================================================================== */
+
+.project-detail-image {
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.project-detail-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.thumbnail-image {
+  transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease;
+  border: 2px solid transparent;
+}
+
+.thumbnail-image:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+  border-color: var(--bs-primary);
+}
+
+/* 燈箱模態對話框樣式 */
+#imageLightboxModal .modal-content {
+  background-color: rgba(0, 0, 0, 0.95);
+  border: none;
+}
+
+#imageLightboxModal .carousel {
+  height: 90vh;
+}
+
+#imageLightboxModal .carousel-control-prev,
+#imageLightboxModal .carousel-control-next {
+  width: 10%;
+  opacity: 0.7;
+  transition: opacity var(--transition-speed) ease;
+}
+
+#imageLightboxModal .carousel-control-prev:hover,
+#imageLightboxModal .carousel-control-next:hover {
+  opacity: 1;
+}
+
+#imageLightboxModal .carousel-indicators {
+  bottom: 20px;
+}
+
+#imageLightboxModal .carousel-indicators button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 4px;
+}
+
+/* 響應式燈箱調整 */
+@media (max-width: 768px) {
+  #imageLightboxModal .carousel {
+    height: 80vh;
+  }
+  
+  .thumbnail-image {
+    height: 60px !important;
+  }
+}

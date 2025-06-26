@@ -447,7 +447,7 @@ class PortfolioApp {
      */
     createProjectCard(project) {
         const col = Utils.DOM.createElement('div', {
-            className: 'col-12 col-md-6 col-lg-4 col-xl-3'
+            className: 'col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3'
         });
         
         const image = project.screenshots && project.screenshots.length > 0 ? 
@@ -472,6 +472,7 @@ class PortfolioApp {
                     </span>
                 </div>
                 <img src="${image}" class="card-img-top" alt="${project.name}" 
+                     loading="lazy"
                      onerror="this.src='${Utils.Project.getDefaultImage(project.projectType)}'">
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex align-items-start justify-content-between mb-2">

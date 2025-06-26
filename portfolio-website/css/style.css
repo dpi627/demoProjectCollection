@@ -73,6 +73,11 @@ body {
    導航列樣式
    ========================================================================== */
 
+.navbar {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: 700;
@@ -102,7 +107,42 @@ body {
   transform: translateX(-50%);
 }
 
-.navbar-nav .nav-link:hover::after {
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+  width: 80%;
+}
+
+/* 修正手機版導航選單 */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background-color: var(--navbar-bg);
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+    padding: 1rem;
+    box-shadow: var(--shadow);
+  }
+  
+  .navbar-nav {
+    gap: 0.25rem;
+  }
+  
+  .navbar-nav .nav-link {
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 0.25rem;
+  }
+  
+  .navbar-nav .nav-link::after {
+    display: none;
+  }
+  
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link.active {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
   width: 80%;
 }
 
@@ -202,6 +242,19 @@ body {
   object-fit: cover;
   border-bottom: 1px solid #eee;
   transition: var(--transition-base);
+  /* 防止圖片加載閃爍 */
+  background-color: #f8f9fa;
+  background-image: linear-gradient(45deg, #f8f9fa 25%, transparent 25%, transparent 75%, #f8f9fa 75%, #f8f9fa),
+                    linear-gradient(45deg, #f8f9fa 25%, transparent 25%, transparent 75%, #f8f9fa 75%, #f8f9fa);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  /* 圖片加載完成前顯示佔位背景 */
+  display: block;
+}
+
+.project-card .card-img-top[src*="data:image/svg+xml"] {
+  /* SVG 佔位圖不需要背景紋理 */
+  background: none;
 }
 
 .project-card:hover .card-img-top {
@@ -542,7 +595,35 @@ body {
    響應式設計
    ========================================================================== */
 
-/* 小型裝置 (手機) */
+/* 極小型裝置 (≤360px) */
+@media (max-width: 360px) {
+  body {
+    padding-top: 65px;
+  }
+  
+  .container-xxl {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+  
+  .hero-content .btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero-content .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* 小型裝置 (手機, ≤575.98px) */
 @media (max-width: 575.98px) {
   body {
     padding-top: 70px;
@@ -550,6 +631,11 @@ body {
   
   .hero-content h1 {
     font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .hero-content .lead {
+    font-size: 1rem;
   }
   
   .hero-content .btn {
@@ -561,6 +647,11 @@ body {
     padding: var(--spacing-md);
   }
   
+  .project-card .card-title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  
   .modal-body {
     padding: var(--spacing-lg);
   }
@@ -569,16 +660,44 @@ body {
   .contact-item {
     padding: var(--spacing-lg);
   }
-}
-
-/* 中型裝置 (平板) */
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .hero-content h1 {
-    font-size: 2.5rem;
+  
+  /* 搜尋篩選區在手機上垂直排列 */
+  .row.mb-4 .col-lg-6,
+  .row.mb-4 .col-lg-3,
+  .row.mb-4 .col-md-6 {
+    margin-bottom: 1rem;
+  }
+  
+  /* 操作按鈕區在手機上調整 */
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .d-flex.justify-content-between > div {
+    text-align: center;
   }
 }
 
-/* 大型裝置 (桌面) */
+/* 中型裝置 (平板, 576px - 991.98px) */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .project-card .card-img-top {
+    height: 180px;
+  }
+}
+
+/* 中大型裝置 (平板橫向, 768px - 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .project-card .card-img-top {
+    height: 200px;
+  }
+}
+
+/* 大型裝置 (桌面, ≥992px) */
 @media (min-width: 992px) {
   .hero-content h1 {
     font-size: 3rem;
@@ -586,6 +705,17 @@ body {
   
   .project-card:hover {
     transform: translateY(-10px);
+  }
+  
+  .project-card .card-img-top {
+    height: 200px;
+  }
+}
+
+/* 超大型裝置 (≥1400px) */
+@media (min-width: 1400px) {
+  .project-card .card-img-top {
+    height: 220px;
   }
 }
 

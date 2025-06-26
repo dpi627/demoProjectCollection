@@ -302,15 +302,32 @@ const Utils = {
         /**
          * 取得預設專案圖片
          * @param {string} type - 專案類型
-         * @returns {string} 圖片 URL
+         * @returns {string} 圖片 URL (使用 SVG 佔位圖避免外部依賴)
          */
         getDefaultImage(type) {
             const imageMap = {
-                'WEB': 'https://via.placeholder.com/300x200/0d6efd/ffffff?text=WEB+專案',
-                'DESKTOP': 'https://via.placeholder.com/300x200/198754/ffffff?text=桌面+應用程式',
-                'CONSOLE': 'https://via.placeholder.com/300x200/6c757d/ffffff?text=控制台+應用程式'
+                'WEB': this.generatePlaceholderSVG('WEB 專案', '#0d6efd'),
+                'DESKTOP': this.generatePlaceholderSVG('桌面應用程式', '#198754'),
+                'CONSOLE': this.generatePlaceholderSVG('控制台應用程式', '#6c757d')
             };
-            return imageMap[type] || 'https://via.placeholder.com/300x200/6c757d/ffffff?text=專案+預覽';
+            return imageMap[type] || this.generatePlaceholderSVG('專案預覽', '#6c757d');
+        },
+
+        /**
+         * 生成 SVG 佔位圖
+         * @param {string} text - 顯示文字
+         * @param {string} color - 背景顏色
+         * @returns {string} SVG Data URL
+         */
+        generatePlaceholderSVG(text, color) {
+            const svg = `
+                <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="${color}"/>
+                    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="18" 
+                          fill="white" text-anchor="middle" dy="0.35em">${text}</text>
+                </svg>
+            `;
+            return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
         }
     },
     

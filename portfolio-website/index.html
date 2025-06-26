@@ -317,8 +317,9 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="projectName" class="form-label">專案名稱 *</label>
-                                    <input type="text" class="form-control" id="projectName" required>
-                                    <div class="invalid-feedback">請輸入專案名稱</div>
+                                    <input type="text" class="form-control" id="projectName" required minlength="2">
+                                    <div class="invalid-feedback">專案名稱至少需要 2 個字元</div>
+                                    <div class="valid-feedback">名稱格式正確</div>
                                 </div>
                                 <div class="col-12">
                                     <label for="projectDescription" class="form-label">專案描述</label>
@@ -333,6 +334,7 @@
                                         <option value="CONSOLE">控制台應用程式</option>
                                     </select>
                                     <div class="invalid-feedback">請選擇專案類型</div>
+                                    <div class="valid-feedback">類型選擇正確</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="projectStatus" class="form-label">專案狀態</label>
@@ -380,19 +382,22 @@
                                     <label for="projectRepositoryUrl" class="form-label">Repository URL</label>
                                     <input type="url" class="form-control" id="projectRepositoryUrl" 
                                            placeholder="https://github.com/username/project">
-                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                    <div class="invalid-feedback">請輸入有效的 URL 格式</div>
+                                    <div class="valid-feedback">URL 格式正確</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="projectWebsiteUrl" class="form-label">網站 URL</label>
                                     <input type="url" class="form-control" id="projectWebsiteUrl" 
                                            placeholder="https://example.com">
-                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                    <div class="invalid-feedback">請輸入有效的 URL 格式</div>
+                                    <div class="valid-feedback">URL 格式正確</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="projectDownloadUrl" class="form-label">下載 URL</label>
                                     <input type="url" class="form-control" id="projectDownloadUrl" 
                                            placeholder="https://example.com/download">
-                                    <div class="invalid-feedback">請輸入有效的 URL</div>
+                                    <div class="invalid-feedback">請輸入有效的 URL 格式</div>
+                                    <div class="valid-feedback">URL 格式正確</div>
                                 </div>
                             </div>
                         </div>
@@ -407,6 +412,8 @@
                                     <label for="projectScreenshots" class="form-label">專案截圖 URL</label>
                                     <input type="url" class="form-control" id="projectScreenshots" 
                                            placeholder="圖片 URL (可在專案完成後添加)">
+                                    <div class="invalid-feedback">請輸入有效的圖片 URL</div>
+                                    <div class="valid-feedback">圖片 URL 格式正確</div>
                                     <small class="form-text text-muted">
                                         目前僅支援單張圖片，請提供圖片的完整 URL
                                     </small>
@@ -432,6 +439,8 @@
                                 <div class="col-md-6">
                                     <label for="projectEndDate" class="form-label">結束日期</label>
                                     <input type="date" class="form-control" id="projectEndDate">
+                                    <div class="invalid-feedback">結束日期不能早於開始日期</div>
+                                    <div class="valid-feedback">日期設定正確</div>
                                 </div>
                             </div>
                         </div>
@@ -496,16 +505,66 @@
         </div>
     </div>
 
+    <!-- 刪除確認模態對話框 -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteConfirmModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>確認刪除
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">確定要刪除以下專案嗎？</p>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong id="deleteProjectName">專案名稱</strong>
+                    </div>
+                    <p class="text-muted small mb-0">
+                        <i class="fas fa-warning me-1"></i>
+                        此操作無法復原，專案資料將永久刪除。
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash me-1"></i>確認刪除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast 通知容器 -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="toastNotification" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer">
+        <!-- Toast 模板，將通過 JavaScript 動態複製 -->
+        <div id="toastTemplate" class="toast align-items-center d-none" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
             <div class="d-flex">
-                <div class="toast-body" id="toastBody">
-                    <!-- 通知內容 -->
+                <div class="toast-body">
+                    <i class="toast-icon me-2"></i>
+                    <span class="toast-message"></span>
                 </div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="關閉"></button>
             </div>
         </div>
+    </div>
+
+    <!-- 全域載入覆蓋層 -->
+    <div id="globalLoader" class="global-loader d-none">
+        <div class="loader-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">載入中...</span>
+            </div>
+            <div class="mt-3 text-muted">
+                <span id="loaderMessage">載入中，請稍候...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁面載入進度條 -->
+    <div id="pageLoadProgress" class="page-load-progress">
+        <div class="progress-bar"></div>
     </div>
 
     <!-- Bootstrap 5 JavaScript Bundle -->

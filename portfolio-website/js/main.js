@@ -2,6 +2,7 @@
         this.projectModal = null;
         this.projectDetailModal = null;
         this.imageLightboxModal = null;
+        this.deleteConfirmModal = null;
         this.lightboxCarousel = null;===========================================
    個人            // 搜尋功能
             searchInput: Utils.DOM.getElement('#searchInput'),
@@ -39,6 +40,9 @@ class PortfolioApp {
         
         // 目前編輯的專案 ID
         this.editingProjectId = null;
+        
+        // 待刪除的專案 ID
+        this.pendingDeleteProjectId = null;
         
         this.init();
     }
@@ -134,10 +138,18 @@ class PortfolioApp {
             imageLightboxModal: Utils.DOM.getElement('#imageLightboxModal'),
             lightboxCarouselInner: Utils.DOM.getElement('#lightboxCarouselInner'),
             lightboxIndicators: Utils.DOM.getElement('#lightboxIndicators'),
+            deleteConfirmModal: Utils.DOM.getElement('#deleteConfirmModal'),
+            deleteProjectName: Utils.DOM.getElement('#deleteProjectName'),
+            confirmDeleteBtn: Utils.DOM.getElement('#confirmDeleteBtn'),
             
             // Toast
-            toastNotification: Utils.DOM.getElement('#toastNotification'),
-            toastBody: Utils.DOM.getElement('#toastBody'),
+            toastContainer: Utils.DOM.getElement('#toastContainer'),
+            toastTemplate: Utils.DOM.getElement('#toastTemplate'),
+            
+            // 載入指示器
+            globalLoader: Utils.DOM.getElement('#globalLoader'),
+            loaderMessage: Utils.DOM.getElement('#loaderMessage'),
+            pageLoadProgress: Utils.DOM.getElement('#pageLoadProgress'),
             
             // 導航
             navLinks: Utils.DOM.getElements('.nav-link')
@@ -164,9 +176,13 @@ class PortfolioApp {
             this.lightboxCarousel = new bootstrap.Carousel(Utils.DOM.getElement('#lightboxCarousel'));
         }
         
+        if (this.elements.deleteConfirmModal) {
+            this.deleteConfirmModal = new bootstrap.Modal(this.elements.deleteConfirmModal);
+        }
+        
         // 初始化 Toast
-        if (this.elements.toastNotification) {
-            this.toast = new bootstrap.Toast(this.elements.toastNotification);
+        if (this.elements.toastTemplate) {
+            // Toast 已透過模板方式處理，不需要單獨初始化
         }
         
         console.log('Bootstrap 組件初始化完成');
@@ -223,12 +239,20 @@ class PortfolioApp {
             this.elements.saveProjectBtn.addEventListener('click', () => this.handleSaveProject());
         }
         
+        // 確認刪除按鈕
+        if (this.elements.confirmDeleteBtn) {
+            this.elements.confirmDeleteBtn.addEventListener('click', () => this.executeDelete());
+        }
+        
         // 表單提交
         if (this.elements.projectForm) {
             this.elements.projectForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.handleSaveProject();
             });
+            
+            // 即時表單驗證
+            this.setupFormValidation();
         }
         
         // 平滑滾動導航
@@ -286,6 +310,8 @@ class PortfolioApp {
         if (e.key === 'Escape') {
             if (this.imageLightboxModal && this.elements.imageLightboxModal.classList.contains('show')) {
                 this.imageLightboxModal.hide();
+            } else if (this.deleteConfirmModal && this.elements.deleteConfirmModal.classList.contains('show')) {
+                this.deleteConfirmModal.hide();
             } else if (this.projectDetailModal && this.elements.projectDetailModal.classList.contains('show')) {
                 this.projectDetailModal.hide();
             } else if (this.projectModal && this.elements.projectModal.classList.contains('show')) {
@@ -654,14 +680,117 @@ class PortfolioApp {
     }
     
     /**
+     * 設定表單即時驗證
+     */
+    setupFormValidation() {
+        const formFields = [
+            { element: this.elements.projectName, validator: this.validateProjectName },
+            { element: this.elements.projectType, validator: this.validateRequired },
+            { element: this.elements.projectRepositoryUrl, validator: this.validateUrl },
+            { element: this.elements.projectWebsiteUrl, validator: this.validateUrl },
+            { element: this.elements.projectDownloadUrl, validator: this.validateUrl },
+            { element: this.elements.projectScreenshots, validator: this.validateUrl },
+            { element: this.elements.projectEndDate, validator: this.validateEndDate }
+        ];
+        
+        formFields.forEach(({ element, validator }) => {
+            if (element) {
+                element.addEventListener('blur', () => {
+                    this.validateField(element, validator);
+                });
+                
+                element.addEventListener('input', () => {
+                    // 清除之前的錯誤狀態
+                    element.classList.remove('is-invalid', 'is-valid');
+                });
+            }
+        });
+    }
+    
+    /**
+     * 驗證單一欄位
+     * @param {HTMLElement} element - 表單元素
+     * @param {Function} validator - 驗證函數
+     */
+    validateField(element, validator) {
+        const isValid = validator.call(this, element.value);
+        
+        if (isValid) {
+            element.classList.remove('is-invalid');
+            element.classList.add('is-valid');
+        } else {
+            element.classList.remove('is-valid');
+            element.classList.add('is-invalid');
+        }
+        
+        return isValid;
+    }
+    
+    /**
+     * 驗證專案名稱
+     * @param {string} value - 值
+     * @returns {boolean} 是否有效
+     */
+    validateProjectName(value) {
+        return value && value.trim().length >= 2;
+    }
+    
+    /**
+     * 驗證必填欄位
+     * @param {string} value - 值
+     * @returns {boolean} 是否有效
+     */
+    validateRequired(value) {
+        return value && value.trim().length > 0;
+    }
+    
+    /**
+     * 驗證 URL 格式
+     * @param {string} value - 值
+     * @returns {boolean} 是否有效
+     */
+    validateUrl(value) {
+        if (!value || value.trim() === '') return true; // 可選欄位
+        
+        try {
+            new URL(value);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+    
+    /**
+     * 驗證結束日期
+     * @param {string} value - 值
+     * @returns {boolean} 是否有效
+     */
+    validateEndDate(value) {
+        if (!value || value.trim() === '') return true; // 可選欄位
+        
+        const startDate = this.elements.projectStartDate?.value;
+        if (!startDate) return true;
+        
+        return new Date(value) >= new Date(startDate);
+    }
+    
+    /**
      * 處理儲存專案
      */
     async handleSaveProject() {
+        const saveBtn = this.elements.saveProjectBtn;
+        
         try {
+            // 顯示載入狀態
+            this.setButtonLoading(saveBtn, true, '儲存中...');
+            
             // 驗證表單
             if (!this.validateForm()) {
                 return;
             }
+            
+            // 模擬載入延遲 (實際專案中可能是 API 呼叫)
+            await new Promise(resolve => setTimeout(resolve, 800));
             
             // 收集表單資料
             const projectData = this.collectFormData();
@@ -686,6 +815,9 @@ class PortfolioApp {
         } catch (error) {
             console.error('儲存專案時發生錯誤:', error);
             this.showToast('儲存專案時發生未知錯誤', 'error');
+        } finally {
+            // 恢復按鈕狀態
+            this.setButtonLoading(saveBtn, false);
         }
     }
     
@@ -733,23 +865,39 @@ class PortfolioApp {
             return;
         }
         
-        if (confirm(`確定要刪除專案「${project.name}」嗎？此操作無法復原。`)) {
-            this.deleteProject(projectId);
+        // 儲存要刪除的專案 ID
+        this.pendingDeleteProjectId = projectId;
+        
+        // 更新確認對話框內容
+        if (this.elements.deleteProjectName) {
+            this.elements.deleteProjectName.textContent = project.name;
+        }
+        
+        // 顯示確認對話框
+        if (this.deleteConfirmModal) {
+            this.deleteConfirmModal.show();
         }
     }
     
     /**
-     * 刪除專案
-     * @param {string} projectId - 專案 ID
+     * 執行刪除操作
      */
-    deleteProject(projectId) {
-        const result = dataManager.deleteProject(projectId);
+    executeDelete() {
+        if (!this.pendingDeleteProjectId) return;
+        
+        const result = dataManager.deleteProject(this.pendingDeleteProjectId);
         
         if (result.success) {
             this.showToast(result.message, 'success');
             this.renderProjects();
         } else {
             this.showToast(result.message, 'error');
+        }
+        
+        // 清理並關閉對話框
+        this.pendingDeleteProjectId = null;
+        if (this.deleteConfirmModal) {
+            this.deleteConfirmModal.hide();
         }
     }
     
@@ -930,18 +1078,69 @@ class PortfolioApp {
      * 顯示 Toast 通知
      * @param {string} message - 訊息內容
      * @param {string} type - 訊息類型 ('success', 'error', 'warning', 'info')
+     * @param {number} duration - 顯示時間(毫秒)，0 表示不自動隱藏
      */
-    showToast(message, type = 'info') {
-        if (!this.elements.toastBody || !this.toast) return;
+    showToast(message, type = 'info', duration = 5000) {
+        if (!this.elements.toastTemplate || !this.elements.toastContainer) return;
         
-        // 設定訊息內容
-        this.elements.toastBody.textContent = message;
+        // 複製模板
+        const toastElement = this.elements.toastTemplate.cloneNode(true);
+        toastElement.id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        toastElement.classList.remove('d-none');
         
-        // 設定樣式
-        this.elements.toastNotification.className = `toast align-items-center toast-${type}`;
+        // 設定類型樣式
+        const typeConfig = {
+            success: {
+                class: 'text-bg-success',
+                icon: 'fas fa-check-circle'
+            },
+            error: {
+                class: 'text-bg-danger',
+                icon: 'fas fa-exclamation-circle'
+            },
+            warning: {
+                class: 'text-bg-warning',
+                icon: 'fas fa-exclamation-triangle'
+            },
+            info: {
+                class: 'text-bg-info',
+                icon: 'fas fa-info-circle'
+            }
+        };
         
-        // 顯示 Toast
-        this.toast.show();
+        const config = typeConfig[type] || typeConfig.info;
+        toastElement.classList.add(config.class);
+        
+        // 設定內容
+        const iconElement = toastElement.querySelector('.toast-icon');
+        const messageElement = toastElement.querySelector('.toast-message');
+        
+        if (iconElement) {
+            iconElement.className = `toast-icon me-2 ${config.icon}`;
+        }
+        
+        if (messageElement) {
+            messageElement.textContent = message;
+        }
+        
+        // 設定自動隱藏時間
+        if (duration > 0) {
+            toastElement.setAttribute('data-bs-delay', duration);
+        } else {
+            toastElement.setAttribute('data-bs-autohide', 'false');
+        }
+        
+        // 添加到容器
+        this.elements.toastContainer.appendChild(toastElement);
+        
+        // 初始化並顯示 Toast
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+        
+        // 當 Toast 隱藏後移除元素
+        toastElement.addEventListener('hidden.bs.toast', () => {
+            toastElement.remove();
+        });
     }
     
     /**
@@ -1018,6 +1217,96 @@ class PortfolioApp {
             editingProjectId: this.editingProjectId,
             projectCount: dataManager.getAllProjects().length
         };
+    }
+    
+    /**
+     * 顯示全域載入指示器
+     * @param {string} message - 載入訊息
+     */
+    showLoader(message = '載入中，請稍候...') {
+        if (this.elements.globalLoader) {
+            if (this.elements.loaderMessage) {
+                this.elements.loaderMessage.textContent = message;
+            }
+            this.elements.globalLoader.classList.remove('d-none');
+        }
+    }
+    
+    /**
+     * 隱藏全域載入指示器
+     */
+    hideLoader() {
+        if (this.elements.globalLoader) {
+            this.elements.globalLoader.classList.add('d-none');
+        }
+    }
+    
+    /**
+     * 設定頁面載入進度
+     * @param {number} progress - 進度百分比 (0-100)
+     */
+    setLoadProgress(progress) {
+        if (this.elements.pageLoadProgress) {
+            const progressBar = this.elements.pageLoadProgress.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                
+                if (progress >= 100) {
+                    setTimeout(() => {
+                        this.elements.pageLoadProgress.style.opacity = '0';
+                        setTimeout(() => {
+                            this.elements.pageLoadProgress.style.display = 'none';
+                        }, 300);
+                    }, 200);
+                }
+            }
+        }
+    }
+    
+    /**
+     * 顯示 Skeleton 載入效果
+     * @param {HTMLElement} container - 容器元素
+     * @param {number} count - Skeleton 數量
+     */
+    showSkeleton(container, count = 3) {
+        if (!container) return;
+        
+        const skeletonHtml = Array(count).fill(0).map(() => `
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <div class="card skeleton-project-card skeleton">
+                    <div class="skeleton-image skeleton"></div>
+                    <div class="card-body">
+                        <div class="skeleton-text wide skeleton"></div>
+                        <div class="skeleton-text medium skeleton"></div>
+                        <div class="skeleton-text narrow skeleton"></div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = skeletonHtml;
+    }
+    
+    /**
+     * 設定按鈕載入狀態
+     * @param {HTMLElement} button - 按鈕元素
+     * @param {boolean} loading - 是否載入中
+     * @param {string} loadingText - 載入中的文字
+     */
+    setButtonLoading(button, loading, loadingText = '處理中...') {
+        if (!button) return;
+        
+        if (loading) {
+            button.dataset.originalText = button.textContent;
+            button.textContent = loadingText;
+            button.disabled = true;
+            button.classList.add('btn-loading');
+        } else {
+            button.textContent = button.dataset.originalText || button.textContent;
+            button.disabled = false;
+            button.classList.remove('btn-loading');
+            delete button.dataset.originalText;
+        }
     }
 }
 

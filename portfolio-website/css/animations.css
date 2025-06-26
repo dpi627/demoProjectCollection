@@ -239,22 +239,22 @@
    ========================================================================== */
 
 .btn {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease-in-out;
   position: relative;
   overflow: hidden;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn:active {
-  transform: translateY(0) scale(0.98);
-  transition: all 0.1s ease;
+  transform: translateY(0);
+  transition-duration: 0.1s;
 }
 
-/* 按鈕漣漪效果 */
+/* 按鈕點擊漣漪效果 */
 .btn::before {
   content: '';
   position: absolute;
@@ -262,10 +262,10 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease;
+  transition: width 0.6s, height 0.6s;
 }
 
 .btn:active::before {
@@ -658,4 +658,200 @@
     transform: translateY(-100px) translateX(100px);
     opacity: 0;
   }
+}
+
+/* Phase 5: 互動回饋效果 */
+
+/* 按鈕互動動畫 */
+.btn {
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+}
+
+/* 按鈕點擊漣漪效果 */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* 卡片懸停效果增強 */
+.card {
+    transition: all 0.3s ease;
+    will-change: transform, box-shadow;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+/* 表單輸入焦點效果 */
+.form-control, .form-select {
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.form-control:focus, .form-select:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25), 
+                0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 導航連結動畫 */
+.nav-link {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--bs-primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* 專案卡片標籤動畫 */
+.badge {
+    transition: all 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 下拉選單動畫 */
+.dropdown-menu {
+    animation: dropdownFadeIn 0.2s ease-in-out;
+    transform-origin: top;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: scaleY(0.8) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1) translateY(0);
+    }
+}
+
+/* 模態對話框進場動畫 */
+.modal.fade .modal-dialog {
+    transition: all 0.3s ease;
+    transform: scale(0.9) translateY(-50px);
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1) translateY(0);
+}
+
+/* 搜尋框脈動效果 */
+.search-focus {
+    animation: searchPulse 2s infinite;
+}
+
+@keyframes searchPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(var(--bs-primary-rgb), 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(var(--bs-primary-rgb), 0);
+    }
+}
+
+/* 載入動畫優化 */
+.spinner-border {
+    animation: spin 0.75s linear infinite;
+}
+
+/* 圖片載入漸入效果 */
+.img-fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.img-fade-in.loaded {
+    opacity: 1;
+}
+
+/* 平滑滾動增強 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 觸控裝置優化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .card:hover {
+        transform: none;
+        box-shadow: var(--bs-box-shadow);
+    }
+    
+    /* 觸控回饋 */
+    .btn:active {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* 減少動畫偏好設定支援 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
 }

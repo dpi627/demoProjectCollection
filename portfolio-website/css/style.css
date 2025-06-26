@@ -1030,13 +1030,13 @@ body {
   margin-top: 1.5rem;
 }
 
-/* 專案卡片列間距調整 */
-#projectsContainer .col-12,
+/* 專案卡片列間距調整 - 移除可能干擾 Bootstrap 網格的樣式 */
+/* #projectsContainer .col-12,
 #projectsContainer .col-sm-6,
 #projectsContainer .col-lg-4,
 #projectsContainer .col-xl-3 {
   margin-bottom: 1.5rem;
-}
+} */
 
 /* 確保卡片在所有尺寸下都有適當的最小高度 */
 .project-card {
@@ -1046,11 +1046,10 @@ body {
 
 /* 避免專案卡片在小螢幕上被過度壓縮 */
 @media (max-width: 575.98px) {
-  #projectsContainer .col-12 {
-    margin-bottom: 2rem;
-  }
-  
   .project-card {
     min-height: 400px;
   }
 }
+
+/* 確保 Bootstrap 網格系統正常工作 */
+/* 移除自訂的網格樣式，讓 Bootstrap 原生樣式生效 */

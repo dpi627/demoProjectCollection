@@ -447,7 +447,7 @@ class PortfolioApp {
      */
     createProjectCard(project) {
         const col = Utils.DOM.createElement('div', {
-            className: 'col-12 col-sm-6 col-lg-4 col-xl-3'
+            className: 'col-12 col-sm-6 col-md-4 col-lg-3'
         });
         
         const image = project.screenshots && project.screenshots.length > 0 ? 

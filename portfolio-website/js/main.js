@@ -447,7 +447,7 @@ class PortfolioApp {
      */
     createProjectCard(project) {
         const col = Utils.DOM.createElement('div', {
-            className: 'col-12 col-sm-6 col-md-4 col-lg-3'
+            className: 'col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3'
         });
         
         const image = project.screenshots && project.screenshots.length > 0 ? 
@@ -1273,7 +1273,7 @@ class PortfolioApp {
         if (!container) return;
         
         const skeletonHtml = Array(count).fill(0).map(() => `
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
                 <div class="card skeleton-project-card skeleton">
                     <div class="skeleton-image skeleton"></div>
                     <div class="card-body">

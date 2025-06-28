@@ -1,5 +1,53 @@
 # 個人作品集網站 - 開發紀錄
 
+## [關鍵修復] Bootstrap 網格系統 display 屬性問題 - 2024-12-28
+
+### 🐛 問題描述
+專案卡片無論螢幕解析度多寬都靠左擠在同一行，不會根據螢幕寬度調整為響應式佈局。經過調查發現，問題出在 `Utils.DOM.show()` 函數將 `#projectsContainer` 設定為 `display: block`，覆蓋了 Bootstrap `.row` 類別的 `display: flex` 屬性。
+
+### 🔍 問題根源
+```javascript
+// 問題代碼 (js/main.js line 603)
+Utils.DOM.show(this.elements.projectsContainer); // 預設使用 display: block
+
+// Utils.DOM.show 函數 (js/utils.js line 79)
+show(element, display = 'block') {
+    if (element) {
+        element.style.display = display; // 覆蓋了 Bootstrap 的 CSS
+    }
+}
+```
+
+### 🔧 修正內容
+
+#### 1. 修正專案容器顯示方式
+**修正前：**
+```javascript
+Utils.DOM.show(this.elements.projectsContainer); // display: block
+```
+
+**修正後：**
+```javascript
+Utils.DOM.show(this.elements.projectsContainer, 'flex'); // display: flex
+```
+
+#### 2. 修正原理
+- Bootstrap 的 `.row` 類別使用 `display: flex` 和 `flex-wrap: wrap` 來實現網格系統
+- 當設定為 `display: block` 時，子元素的 Bootstrap 網格類別（如 `col-lg-3`）無法正常運作
+- 明確指定 `display: flex` 確保 Bootstrap 網格系統正常工作
+
+### 🧪 測試驗證
+- [x] 確認 `#projectsContainer` 使用 `display: flex`
+- [x] 驗證 Bootstrap 網格類別 `col-12 col-sm-6 col-md-4 col-lg-3` 正常運作
+- [x] 測試響應式佈局在不同螢幕尺寸下的表現
+
+### 🎯 影響範圍
+- ✅ 專案卡片響應式佈局恢復正常
+- ✅ Bootstrap 網格系統完全生效
+- ✅ 修復最小化，僅影響一行代碼
+
+---
+
 ## [響應式修復] 專案卡片 RWD 布局優化 - 2024-12-27
 
 ### 🐛 問題描述

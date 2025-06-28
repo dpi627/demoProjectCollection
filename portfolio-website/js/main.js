@@ -600,7 +600,7 @@ class PortfolioApp {
      */
     hideNoProjectsMessage() {
         Utils.DOM.hide(this.elements.noProjectsMessage);
-        Utils.DOM.show(this.elements.projectsContainer);
+        Utils.DOM.show(this.elements.projectsContainer, 'flex');
     }
     
     /**
